@@ -1,8 +1,20 @@
+import os
+
 from django.shortcuts import render, get_object_or_404
 from .models import Drawing, Category
 
 
 def drawing_gallery(request, category_id=None):
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+
+    if not User.objects.filter(username=os.environ.get('DJANGO_SUPERUSER_USERNAME')).exists():
+        User.objects.create_superuser(
+            username=os.environ.get('DJANGO_SUPERUSER_USERNAME'),
+            email=os.environ.get('DJANGO_SUPERUSER_EMAIL'),
+            password=os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+        )
     request.session['last_viewed_category'] = category_id  # Store the category in session
     categories = Category.objects.all()
     if category_id:
