@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Drawings Gallery</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <!-- Add this line in the <head> section -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing Script&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Projects</h1>
+    <!-- Switch Toggle for Theme -->
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="theme-toggle-checkbox">
+            <input type="checkbox" id="theme-toggle-checkbox">
+            <span class="slider"></span>
+        </label>
+        <span id="theme-label">Light Mode</span>
+    </div>
+    <!-- Category Filter -->
+    <div class="category-filter">
+        <ul>
+            <li><a href="{% url 'drawing_gallery' %}">All</a></li>
+            {% for category in categories %}
+                <li><a href="{% url 'drawings_by_category' category.id %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="gallery">
+        {% for drawing in drawings %}
+            <div class="card">
+                <a href="{% url 'drawing_detail' drawing.pk %}">
+                    <div class="image-container">
+                        <img src="{{ drawing.image.url }}">
+                    </div>
+                </a>
+                <h2>{{ drawing.title }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="content-wrapper"></div>
+    <footer>
+        &copy; 2024 My Projects
+    </footer>
+    <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>
